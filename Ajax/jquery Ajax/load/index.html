@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<script type="text/javascript" src="jquery-2.1.4.min.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		$("#send").click(function(){
+			$("#resText").load("test.html");
+		});
+	});
+	</script>
+</head>
+<body>
+	<input type="button" value="Ajax获取" id="send"/>
+	<div class="comment">已有评论：</div>
+	<div id="resText"></div>
+</body>
+</html>
