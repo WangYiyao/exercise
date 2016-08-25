@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>viana demo</title>
+    <meta charset="utf-8">
+</head>
+<body>
+    <button id="check">报到</button>
+    <ul id="list"></ul>
+
+    <script src="jquery.js"></script>  
+    <script src="underscore.js"></script>  
+    <script src="backbone.js"></script> 
+    <script type="text/javascript">
+        (function($){
+            Book = Backbone.Model.extend({
+                defaults:{
+                    title:"default"
+                },
+                initialize: function(){
+                    ;
+                }
+            });
+            BookShelf = Backbone.Collection.extend({
+                model: Book
+            });
+            var book1 = new Book({title:"1"});
+            var book2 = new Book({title:"2"});
+            var bookshelf = new BookShelf([book1,book2]);
+            bookshelf.each(function(book){
+                console.log(book.get('title'));
+            });
+
+            //从服务器获取数据 reset bookshelf
+            bookshelf.bind("reset",showAllBooks());
+            bookshelf.fetch({
+                url: "/getbooks",
+                success: function(collections,response){
+                    collections.each(function(book){
+                        console.log(book.get("title"));
+                    });
+                },
+                error: function(){
+                    console.log("erroe");
+                }
+            });
+
+            showAllBooks = function(){
+                bookshelf.each(function(book){
+                    //渲染页面
+                })；
+            }
+
+        })(jQuery);
+    </script> 
+</body>
+</html>

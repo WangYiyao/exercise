@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>viana backbone Hello World</title>
+</head>
+<body>
+	<button id="add">添加</button>
+	<button id="clear">清空</button>
+	<ul id="list"></ul>
+
+	<script src="jquery.js"></script>
+    <script src="underscore.js"></script>
+    <script src="backbone.js"></script>
+    <script type="text/javascript">
+    	(function(){
+    		var People = Backbone.Model.extend({
+    			default:{
+    				"name": null
+    			}
+    		});
+
+    		var Peoples = Backbone.Collection.extend({
+    			model: People
+    		});
+
+    		var View = Backbone.View.extend({
+    			el: $("body"),
+    			initialize: function(){
+    				this.collection.bind("add",this.addOne);
+    				this.collection.bind("remove",this.delOne);
+    			},
+    			events: {
+    				"click #add":"add",
+    				"click .del":"del",
+    				"click #clear":"clear"
+    			},
+    			add:function(){
+    				var name = prompt("请输入姓名", "小明");
+    				var people = new People({
+    							"name":name
+    						});
+    				this.collection.add(people);
+    			},
+    			del: function(event){
+    				var delWho = event.currentTarget.id;
+    				this.collection.remove(delWho);
+    			},
+    			addOne: function(model){
+    				$("#list").append("<li>"+model.get("name")+"说：hello world!<button class='del' id='"+model.cid+"'>删除</button></li>");
+    			},
+    			delOne: function(model){
+    				$("#"+model.cid).parent().remove();
+    			},
+    			clear: function(){
+    				this.collection.reset();
+    				this.clearAll();
+    			},
+    			clearAll: function(){
+    				$("#list").empty();
+    			}
+    		});
+
+    		var peoples = new Peoples();
+    		var app = new View({
+    			collection: peoples
+    		});
+    	})();
+    </script>
+</body>
+</html>
